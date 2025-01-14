@@ -34,9 +34,9 @@ public class Main extends ApplicationAdapter {
     private float HEIGHT = 6;
 
     public void create() {
-        world = new World(new Vector2(0, -9.8f), true);
+        world = new World(new Vector2(0, -15f), true); 
         debugRenderer = new Box2DDebugRenderer();
-        shapeRenderer = new ShapeRenderer(); // Initialize ShapeRenderer
+        shapeRenderer = new ShapeRenderer();
 
         // Set up the camera
         camera = new OrthographicCamera();
@@ -44,10 +44,8 @@ public class Main extends ApplicationAdapter {
         addBorders();
         balls = new ArrayList<>();
 
-        
-
         // Add some balls
-        for (int i = 0; i < 10; i++) {   
+        for (int i = 0; i < 15; i++) {   
             addSnowman();
         }
     }
@@ -57,9 +55,8 @@ public class Main extends ApplicationAdapter {
         createWall(WIDTH/2, HEIGHT, WIDTH, .01f);//TOP
         createWall(0, HEIGHT/2, .01f, HEIGHT);//LEFT
         createWall(WIDTH, HEIGHT/2, .01f, HEIGHT);//RIGHT
-
-
     }
+
     private void createWall(float centerX, float centerY, float width, float height) {
         // Create the body definition
         BodyDef wallBodyDef = new BodyDef();
@@ -78,6 +75,7 @@ public class Main extends ApplicationAdapter {
         // Dispose of the shape
         wallShape.dispose();
     }
+
     @Override
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
@@ -140,18 +138,24 @@ public class Main extends ApplicationAdapter {
         FixtureDef middleSnowball = new FixtureDef();
         middleSnowball.shape = ballShape;
         middleSnowball.density = 1f;
-        middleSnowball.restitution = 0.8f; 
+        middleSnowball.restitution = 1.2f; 
 
         ball.createFixture(middleSnowball);
 
         //final snowball
-        //ADD THE CODE HERE
+        ballShape.setRadius(.15f);
+        ballShape.setPosition(new Vector2(0, .45f));
+        FixtureDef topSnowball = new FixtureDef();
+        topSnowball.shape = ballShape;
+        topSnowball.density = 1f;
+        topSnowball.restitution = 1.2f; 
+
+        ball.createFixture(topSnowball);
 
         ballShape.dispose();
-        ball.setLinearVelocity(new Vector2(randomFloat(-2,2), randomFloat(-2,2)));
+        ball.setLinearVelocity(new Vector2(randomFloat(-3,3), randomFloat(-3,3)));
 
-        // Set initial angular velocity
-        ball.setAngularVelocity(randomFloat(-2,2));
+        ball.setAngularVelocity(randomFloat(-3,3));
         balls.add(ball);
     }
 
@@ -159,6 +163,6 @@ public class Main extends ApplicationAdapter {
     public void dispose() {
         world.dispose();
         debugRenderer.dispose();
-        shapeRenderer.dispose(); // Dispose of ShapeRenderer
+        shapeRenderer.dispose();
     }
 }
